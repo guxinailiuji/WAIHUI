@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>外汇基础知识</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/lucide-react@latest/dist/umd/lucide.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @keyframes pulse-medium {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        @keyframes pulse-fast {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .animate-pulse-medium {
+            animation: pulse-medium 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        .animate-pulse-fast {
+            animation: pulse-fast 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* 导航栏闪烁效果 */
+        @keyframes nav-glow {
+            0%, 100% { text-shadow: 0 0 2px currentColor; opacity: 0.9; }
+            50% { text-shadow: 0 0 6px currentColor; opacity: 1; }
+        }
+        .nav-item-glow {
+            animation: nav-glow 2s ease-in-out infinite;
+            transition: color 0.3s ease;
+        }
+        .usd-index-color { color: #2e8b57; } /* 美元绿色 */
+        .usd-color { color: #3c3b6e; } /* 美国国旗蓝色 */
+        .cny-color { color: #de2910; } /* 中国国旗红色 */
+        .eur-color { color: #003399; } /* 欧盟旗蓝色 */
+        .gbp-color { color: #cf142b; } /* 英国国旗红色 */
+        .aud-color { color: #00008b; } /* 澳大利亚国旗蓝色 */
+        .jpy-color { color: #bc002d; } /* 日本国旗红色 */
+        .chf-color { color: #ff0000; } /* 瑞士国旗红色 */
+        .cad-color { color: #ff0000; } /* 加拿大国旗红色 */
+        .nzd-color { color: #00247d; } /* 新西兰国旗蓝色 */
+        .hkd-color { color: #ee1c25; } /* 香港特区区旗红色 */
+        .try-color { color: #e30a17; } /* 土耳其国旗红色 */
+        .inr-color { color: #ff9933; } /* 印度国旗橙色 */
+        .idr-color { color: #ff0000; } /* 印尼国旗红色 */
+        .vnd-color { color: #da251d; } /* 越南国旗红色 */
+        .zar-color { color: #007a4d; } /* 南非国旗绿色 */
+        .brl-color { color: #009b3a; } /* 巴西国旗绿色 */
+        
+        /* 社交媒体颜色与闪烁效果 */
+        @keyframes social-glow {
+            0%, 100% { filter: drop-shadow(0 0 2px currentColor); opacity: 0.9; }
+            50% { filter: drop-shadow(0 0 5px currentColor); opacity: 1; }
+        }
+        .social-glow {
+            animation: social-glow 2.5s ease-in-out infinite;
+        }
+        .bilibili-color { color: #00a1d6; } /* 哔哩哔哩蓝色 */
+        .youtube-color { color: #ff0000; } /* YouTube红色 */
+        .douyin-color { color: #000000; } /* 抖音黑色 */
+        .kuaishou-color { color: #ff5500; } /* 快手橙色 */
+        .twitter-color { color: #1da1f2; } /* Twitter蓝色 */
+        .telegram-color { color: #0088cc; } /* Telegram蓝色 */
+        .discord-color { color: #5865f2; } /* Discord紫色 */
+        .weibo-color { color: #e6162d; } /* 微博红色 */
+        .xiaohongshu-color { color: #ff2442; } /* 小红书红色 */
+    </style>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+    <header class="sticky top-0 bg-white border-b border-gray-200 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-semibold">外汇基础知识</h1>
+                <p class="text-sm text-gray-600">by 不霁何虹</p>
+            </div>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#usd-index" class="hover:text-gray-600 font-medium nav-item-glow usd-index-color">美元指数</a></li>
+                    <li><a href="#usd" class="hover:text-gray-600 font-medium nav-item-glow usd-color">美元</a></li>
+                    <li><a href="#cny" class="hover:text-gray-600 font-medium nav-item-glow cny-color">人民币</a></li>
+                    <li><a href="#eur" class="hover:text-gray-600 font-medium nav-item-glow eur-color">欧元</a></li>
+                    <li><a href="#gbp" class="hover:text-gray-600 font-medium nav-item-glow gbp-color">英镑</a></li>
+                    <li><a href="#aud" class="hover:text-gray-600 font-medium nav-item-glow aud-color">澳元</a></li>
+                    <li><a href="#jpy" class="hover:text-gray-600 font-medium nav-item-glow jpy-color">日元</a></li>
+                    <li><a href="#chf" class="hover:text-gray-600 font-medium nav-item-glow chf-color">瑞士法郎</a></li>
+                    <li><a href="#cad" class="hover:text-gray-600 font-medium nav-item-glow cad-color">加元</a></li>
+                    <li><a href="#nzd" class="hover:text-gray-600 font-medium nav-item-glow nzd-color">新西兰元</a></li>
+                    <li><a href="#hkd" class="hover:text-gray-600 font-medium nav-item-glow hkd-color">港币</a></li>
+                    <li><a href="#try" class="hover:text-gray-600 font-medium nav-item-glow try-color">土耳其里拉</a></li>
+                    <li><a href="#inr" class="hover:text-gray-600 font-medium nav-item-glow inr-color">印度卢比</a></li>
+                    <li><a href="#idr" class="hover:text-gray-600 font-medium nav-item-glow idr-color">印尼盾</a></li>
+                    <li><a href="#vnd" class="hover:text-gray-600 font-medium nav-item-glow vnd-color">越南盾</a></li>
+                    <li><a href="#zar" class="hover:text-gray-600 font-medium nav-item-glow zar-color">南非兰特</a></li>
+                    <li><a href="#brl" class="hover:text-gray-600 font-medium nav-item-glow brl-color">巴西雷亚尔</a></li>
+                </ul>
+            </nav>
+            <button id="mobile-menu-button" class="md:hidden">
+                <i class="lucide-menu"></i>
+            </button>
+        </div>
+        <div class="container mx-auto px-4 pb-2 flex justify-end space-x-4">
+            <a href="https://space.bilibili.com" target="_blank" title="哔哩哔哩" class="text-gray-600 hover:text-blue-500 social-glow bilibili-color">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 3a3 3 0 0 0-3 3v.79A5.97 5.97 0 0 0 9 3a5.97 5.97 0 0 0-6 5.79v1.42A4.97 4.97 0 0 0 5 19h14a4.97 4.97 0 0 0 2-8.79v-1.42A5.97 5.97 0 0 0 18 3z"/>
+                    <path d="M10 8h4"/>
+                    <path d="M13 12V16"/>
+                    <path d="M11 12V16"/>
+                </svg>
+            </a>
+            <a href="https://www.youtube.com" target="_blank" title="YouTube" class="text-gray-600 hover:text-red-600 social-glow youtube-color">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+                </svg>
+            </a>
+            <a href="https://www.douyin.com" target="_blank" title="抖音" class="text-gray-600 hover:text-black social-glow douyin-color">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12a4 4 0 1 0 0 8 4 4 0 0 0 0-8z"/>
+                    <path d="M15 8a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
+                    <path d="M15 8v8a4 4 0 0 1-4 4"/>
+                    <path d="M15 4a4 4 0 0 0 4 4"/>
+                    <path d="M19 8v8"/>
+                </svg>
+            </a>
+            <a href="https://www.kuaishou.com" target="_blank" title="快手" class="text-gray-600 hover:text-yellow-500 social-glow kuaishou-color">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 3h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8a5 5 0 0 1 5-5z"/>
+                    <path d="M12 16v-8"/>
+                    <path d="M16 10h-8"/>
+                    <path d="M16 14h-8"/>
+                </svg>
+            </a>
+            <a href="https://twitter.com" target="_blank" title="Twitter" class="text-gray-600 hover:text-blue-400 social-glow twitter-color">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
+                </svg>
+            </a>
+            <a href="https://t.me" target="_blank" title="Telegram" class="text-gray-600 hover:text-blue-500 social-glow telegram-color">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 2L11 13"/>
+                    <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+                </svg>
+            </a>
+            <a href="https://discord.com" target="_blank" title="Discord" class="text-gray-600 hover:text-indigo-500 social-glow discord-color">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12h.01"/>
+                    <path d="M15 12h.01"/>
+                    <path d="M7.5 4h9c.83 0 1.5.67 1.5 1.5v9c0 .83-.67 1.5-1.5 1.5h-3l-3 3-3-3h-3A1.5 1.5 0 0 1 5 14.5v-9C5 4.67 5.67 4 6.5 4z"/>
+                    <path d="M8.5 8.5a3.54 3.54 0 0 1 3.5-2 3.54 3.54 0 0 1 3.5 2"/>
+                </svg>
+            </a>
+            <a href="https://weibo.com" target="_blank" title="微博" class="text-gray-600 hover:text-red-500 social-glow weibo-color">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 8a3 3 0 0 0-3 3v8h6a3 3 0 0 1-3 3v0a6 6 0 0 1-6-6V9a8 8 0 0 1 8-8h1"/>
+                    <path d="M13 11.5c1.4.8 2 2.2 2 3.5 0 .3 0 .6-.1.9"/>
+                    <path d="M16 9h5"/>
+                    <path d="M21 6v5"/>
+                </svg>
+            </a>
+            <a href="https://www.xiaohongshu.com" target="_blank" title="小红书" class="text-gray-600 hover:text-red-400 social-glow xiaohongshu-color">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="6" y="6" width="12" height="12" rx="2"/>
+                    <path d="M9 10h6"/>
+                    <path d="M9 14h6"/>
+                    <rect x="10" y="3" width="4" height="3"/>
+                </svg>
+            </a>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-gray-200 px-4 py-2">
+            <ul class="space-y-2">
+                <li><a href="#usd-index" class="block py-2 hover:text-gray-600 nav-item-glow usd-index-color">美元指数</a></li>
+                <li><a href="#usd" class="block py-2 hover:text-gray-600 nav-item-glow usd-color">美元</a></li>
+                <li><a href="#cny" class="block py-2 hover:text-gray-600 nav-item-glow cny-color">人民币</a></li>
+                <li><a href="#eur" class="block py-2 hover:text-gray-600 nav-item-glow eur-color">欧元</a></li>
+                <li><a href="#gbp" class="block py-2 hover:text-gray-600 nav-item-glow gbp-color">英镑</a></li>
+                <li><a href="#aud" class="block py-2 hover:text-gray-600 nav-item-glow aud-color">澳元</a></li>
+                <li><a href="#jpy" class="block py-2 hover:text-gray-600 nav-item-glow jpy-color">日元</a></li>
+                <li><a href="#chf" class="block py-2 hover:text-gray-600 nav-item-glow chf-color">瑞士法郎</a></li>
+                <li><a href="#cad" class="block py-2 hover:text-gray-600 nav-item-glow cad-color">加元</a></li>
+                <li><a href="#nzd" class="block py-2 hover:text-gray-600 nav-item-glow nzd-color">新西兰元</a></li>
+                <li><a href="#hkd" class="block py-2 hover:text-gray-600 nav-item-glow hkd-color">港币</a></li>
+                <li><a href="#try" class="block py-2 hover:text-gray-600 nav-item-glow try-color">土耳其里拉</a></li>
+                <li><a href="#inr" class="block py-2 hover:text-gray-600 nav-item-glow inr-color">印度卢比</a></li>
+                <li><a href="#idr" class="block py-2 hover:text-gray-600 nav-item-glow idr-color">印尼盾</a></li>
+                <li><a href="#vnd" class="block py-2 hover:text-gray-600 nav-item-glow vnd-color">越南盾</a></li>
+                <li><a href="#zar" class="block py-2 hover:text-gray-600 nav-item-glow zar-color">南非兰特</a></li>
+                <li><a href="#brl" class="block py-2 hover:text-gray-600 nav-item-glow brl-color">巴西雷亚尔</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- 美元指数 -->
+        <section id="usd-index" class="mb-16">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-8 mr-4 flex items-center justify-center bg-green-100 rounded shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-green-700 w-7 h-7">
+                        <rect x="2" y="6" width="20" height="12" rx="2"/>
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 8v8M15 9.5L12 8 9 9.5"/>
+                        <path d="M9 14.5L12 16l3-1.5"/>
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold">美元指数 (USDX)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">美元指数是一项被广泛关注的金融指标，用于衡量美元兑一篮子外币的汇率走势。它通过量化美元在国际市场上的强度，为交易者、投资者和经济学家评估美元的价值和国际地位提供参考。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>定义：</strong> 美元指数衡量美元相对于一篮子六种主要货币的价值。</li>
+                    <li><strong>起始值：</strong> USDX 的基值从 100 开始，反映了美元在全球舞台上的实力。</li>
+                    <li><strong>货币篮子：</strong> 货币篮子包括欧元 (EUR)、日元 (JPY)、英镑 (GBP)、加拿大元 (CAD)、瑞典克朗 (SEK) 和瑞士法郎 (CHF)。欧元在其中权重最高，对指数的波动影响最大。</li>
+                    <li><strong>计算方法：</strong> 美元指数采用加权几何平均数计算。如果美元是基础货币，则权重为正；如果美元是报价货币，则权重为负。</li>
+                    <li><strong>历史：</strong> 该指数于 1973 年推出，旨在监测美元相对于全球货币的汇率。2002年欧元推出时，指数的成分进行过调整。</li>
+                    <li><strong>代码：</strong> 美元指数的代码通常表示为 "DXY" 或 "USDX"。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">货币篮子权重</h3>
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <!-- 欧元 -->
+                    <div>
+                        <div class="flex justify-between mb-0.5">
+                            <span class="text-xs text-gray-600">欧元 (EUR)</span>
+                            <span class="text-xs font-medium">57.6%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-blue-500 h-1.5 rounded-full animate-pulse-slow" style="width: 57.6%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 日元 -->
+                    <div>
+                        <div class="flex justify-between mb-0.5">
+                            <span class="text-xs text-gray-600">日元 (JPY)</span>
+                            <span class="text-xs font-medium">13.6%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-red-500 h-1.5 rounded-full animate-pulse-medium" style="width: 13.6%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 英镑 -->
+                    <div>
+                        <div class="flex justify-between mb-0.5">
+                            <span class="text-xs text-gray-600">英镑 (GBP)</span>
+                            <span class="text-xs font-medium">11.9%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-indigo-500 h-1.5 rounded-full animate-pulse-fast" style="width: 11.9%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 加拿大元 -->
+                    <div>
+                        <div class="flex justify-between mb-0.5">
+                            <span class="text-xs text-gray-600">加拿大元 (CAD)</span>
+                            <span class="text-xs font-medium">9.1%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-red-600 h-1.5 rounded-full animate-pulse-medium" style="width: 9.1%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 瑞典克朗 -->
+                    <div>
+                        <div class="flex justify-between mb-0.5">
+                            <span class="text-xs text-gray-600">瑞典克朗 (SEK)</span>
+                            <span class="text-xs font-medium">4.2%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-yellow-500 h-1.5 rounded-full animate-pulse-fast" style="width: 4.2%"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- 瑞士法郎 -->
+                    <div>
+                        <div class="flex justify-between mb-0.5">
+                            <span class="text-xs text-gray-600">瑞士法郎 (CHF)</span>
+                            <span class="text-xs font-medium">3.6%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-1.5 overflow-hidden">
+                            <div class="bg-red-500 h-1.5 rounded-full animate-pulse-slow" style="width: 3.6%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响美元指数的主要因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>美国货币政策：</strong> 美联储的利率决策会影响美元的价值。例如，美联储的利率决定可能吸引外国投资，从而提升美元的价值。</li>
+                    <li><strong>美国经济数据：</strong> GDP 增长和低失业率等积极指标反映了美国经济的实力，可以支撑美元。</li>
+                    <li><strong>欧元区发展：</strong> 考虑到欧元在货币篮子中的重要性，欧洲央行的政策和欧元区经济发展会显著影响该指数。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 美元 -->
+        <section id="usd" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/united-states-flag.svg" alt="美国国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">美元 (USD)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">美元是美国的官方货币，也是全球主要储备货币和国际贸易中最广泛使用的货币。它在全球金融体系中扮演着核心角色。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>历史：</strong> 美元于1785年被美国国会确立为美国的官方货币单位。1792年的铸币法案正式定义了美元，最初与黄金和白银挂钩。</li>
+                    <li><strong>地位：</strong> 美元是全球最主要的储备货币，约占全球外汇储备的60%左右。</li>
+                    <li><strong>符号与代码：</strong> 美元的货币符号为$，国际标准代码为USD。</li>
+                    <li><strong>面额：</strong> 现行美元纸币有1、2、5、10、20、50和100美元面额，硬币有1美分、5美分、10美分、25美分、50美分和1美元。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">全球影响力</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>储备货币：</strong> 美元是世界第一大储备货币，各国央行持有大量美元作为外汇储备。</li>
+                    <li><strong>贸易结算：</strong> 许多国际商品，特别是石油（被称为"石油美元"），通常以美元计价和交易。</li>
+                    <li><strong>美元化：</strong> 一些国家和地区直接采用美元作为法定货币或与本国货币挂钩，如巴拿马、厄瓜多尔、萨尔瓦多等。</li>
+                    <li><strong>联系汇率：</strong> 许多国家，尤其是发展中国家，将其货币与美元挂钩以维持汇率稳定。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">美元汇率影响因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>美联储政策：</strong> 美国联邦储备委员会的货币政策（尤其是利率决定）对美元汇率有直接影响。</li>
+                    <li><strong>经济数据：</strong> 美国的GDP增长、就业数据、通货膨胀率、贸易数据等经济指标会影响美元汇率。</li>
+                    <li><strong>避险情绪：</strong> 在全球经济或地缘政治不确定性增加时，美元常被视为"避险资产"，吸引资金流入。</li>
+                    <li><strong>政治因素：</strong> 美国的政治稳定性、政策变化和国际关系都会影响美元价值。</li>
+                    <li><strong>贸易平衡：</strong> 美国的贸易赤字或顺差会影响美元需求，进而影响汇率。</li>
+                    <li><strong>市场预期：</strong> 市场对未来美元走势的预期会影响当前的汇率水平。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 人民币 -->
+        <section id="cny" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/chinese-flag.svg" alt="中国国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">人民币 (CNY/CNH)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">人民币是中华人民共和国的法定货币，由中国人民银行发行。人民币分为在岸人民币(CNY)和离岸人民币(CNH)，在国际贸易和外汇市场中扮演着日益重要的角色。</p>
+        
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>官方货币：</strong> 人民币(Renminbi，简称RMB)是中国的法定货币，单位是元(Yuan)，国际标准代码为CNY。</li>
+                    <li><strong>发行机构：</strong> 中国人民银行负责人民币的发行和管理，是中国的中央银行。</li>
+                    <li><strong>货币符号：</strong> 人民币的符号是￥，有时也用RMB或元表示
+                    <li><strong>货币种类：</strong> 人民币有纸币和硬币两种形式，纸币面额有1元、5元、10元、20元、50元和100元，硬币面额有1角、5角和1元。</li>
+                </ul>
+        
+                <h3 class="text-xl font-semibold mt-6 mb-3">在岸人民币 (CNY) vs 离岸人民币 (CNH)</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>在岸人民币 (CNY)：</strong>
+                        <ul class="list-circle pl-6 mt-2 space-y-1">
+                            <li>CNY是在中国大陆境内流通的人民币，受到中国政府严格的资本管制。</li>
+                            <li>CNY汇率由中国人民银行设定中间价，并在一定范围内浮动。</li>
+                            <li>CNY主要用于国内贸易和投资。</li>
+                        </ul>
+                    </li>
+                    <li><strong>离岸人民币 (CNH)：</strong>
+                        <ul class="list-circle pl-6 mt-2 space-y-1">
+                            <li>CNH是在中国大陆境外流通的人民币，主要在香港、新加坡、伦敦等地交易。</li>
+                            <li>CNH的汇率由市场供求关系决定，波动性相对较高。</li>
+                            <li>CNH主要用于国际贸易结算、投资和融资。</li>
+                        </ul>
+                    </li>
+                    <li><strong>CNY与CNH的区别：</strong> 虽然CNY和CNH都是人民币，但由于流通地域和监管政策的不同，它们的汇率可能存在差异。离岸人民币通常比在岸人民币稍强或稍弱。</li>
+                </ul>
+        
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响人民币汇率的因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>中国经济数据：</strong> GDP增长、通货膨胀、贸易顺差等宏观经济指标是影响人民币汇率的关键因素。</li>
+                    <li><strong>货币政策：</strong> 中国人民银行的货币政策，如利率调整、存款准备金率等，会直接影响人民币的资金供求和汇率水平。</li>
+                    <li><strong>外汇储备：</strong> 中国庞大的外汇储备为人民币汇率提供了支撑，但也使得人民币的汇率政策更加复杂。</li>
+                    <li><strong>国际收支状况：</strong> 贸易顺差和资本流入增加通常会导致人民币升值，而贸易逆差和资本流出则可能导致人民币贬值。</li>
+                    <li><strong>地缘政治事件：</strong> 国际政治和地缘政治事件，如贸易摩擦、地区冲突等，也会对人民币汇率产生影响。</li>
+                    <li><strong>市场情绪：</strong> 市场对人民币走势的预期和投资者情绪会影响汇率波动。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 欧元 -->
+        <section id="eur" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/euro-flag.svg" alt="欧盟旗帜" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">欧元 (EUR)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">欧元是欧洲货币联盟的官方货币，由欧洲中央银行管理。它是全球交易量最大的货币之一，在国际贸易和金融市场中扮演着重要角色。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>历史：</strong> 欧元的前身是德国马克。1999年1月1日，欧元在奥地利、比利时、法国、德国、芬兰、荷兰、卢森堡、爱尔兰、意大利、葡萄牙和西班牙等11个国家（欧元区国家）正式启用，并于2002年1月1日取代这些国家的货币。</li>
+                    <li><strong>欧元区成员国：</strong> 最初的11个国家之后，希腊（2000年）、斯洛文尼亚（2007年）、塞浦路斯（2008年）、马耳他（2008年）、斯洛伐克（2009年）和爱沙尼亚（2011年）也加入了欧元区。</li>
+                    <li><strong>代码和符号：</strong> 欧元的标准代码为 EUR。</li>
+                    <li><strong>进制：</strong> 1 欧元 = 100 欧分 (cent)。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">欧元/美元 (EUR/USD)</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>欧元兑美元是全球交易量最大的货币对之一。汇率表示需要多少美元来购买一欧元。</li>
+                    <li>例如，如果 EUR/USD 汇率为 1.50，则表示 1 欧元可以兑换 1.50 美元。欧元是基础货币，美元是报价货币。</li>
+                    <li><strong>影响 EUR/USD 汇率的因素：</strong>
+                        <ul class="list-circle pl-6 mt-2 space-y-1">
+                            <li>欧洲中央银行 (ECB) 和美联储 (Fed) 设定的利率差异。</li>
+                            <li>欧元区和美国的 GDP 增长、就业率和通胀数据等经济指标。</li>
+                            <li>政治稳定、贸易协定和国际冲突等地缘政治事件。</li>
+                            <li>货币政策变化、财政刺激和危机等经济事件。</li>
+                        </ul>
+                    </li>
+                    <li><strong>交易时间：</strong> 欧元兑美元每周 5 天，每天 24 小时运作，在悉尼、东京、伦敦和纽约有外汇市场交易时段。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 英镑 -->
+        <section id="gbp" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/british-flag.svg" alt="英国国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">英镑 (GBP)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">英镑是英国的国家货币，作为全球第四大交易货币，在国际金融市场中占有重要地位。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>定义：</strong> 英镑是英国的国家货币，其外汇市场代码为 GBP。</li>
+                    <li><strong>地位：</strong> 它是全球第四大交易货币，排在美元、欧元和日元之后。</li>
+                    <li><strong>符号：</strong> 英镑的符号是 £。</li>
+                    <li><strong>单位：</strong> 一英镑等于 100 便士。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li>英镑起源可以追溯到罗马帝国时期。</li>
+                    <li>早在公元 775 年，英镑就已存在，当时 1 英镑等于 1 磅重的银币。</li>
+                    <li>直到公元 928 年，英格兰第一位国王阿塞尔斯坦 (Athelstan) 统治时期，英镑才正式成为英国货币。</li>
+                    <li>英格兰银行于 1694 年成立，负责管理英镑。</li>
+                    <li>1971 年，英国允许英镑自由浮动。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响英镑汇率的因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>英国中央银行和货币政策委员会制定的政策。</li>
+                    <li>英镑利率。</li>
+                    <li>政府债券。</li>
+                    <li>富时 100 指数。</li>
+                    <li>英国的主要经济数据，包括 GDP、失业人数、CPI 等。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 澳元 -->
+        <section id="aud" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/australian-flag.svg" alt="澳大利亚国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">澳大利亚元 (AUD)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">澳大利亚元（Australian Dollar），简写为A$或AUD，是澳大利亚的通货基本单位，在全球外汇市场中占有重要地位。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>基本单位：</strong> 澳大利亚元（Australian Dollar），简写为A$或AUD，是澳大利亚的通货基本单位，一元等于100分。</li>
+                    <li><strong>国际地位：</strong> 澳大利亚元是外汇市场上交易量第五大的流通货币，位于美元、欧元、日元和英镑之后，占据总交易量的6%。2010年，澳元取代瑞士法郎成为全球第五大流通货币。</li>
+                    <li><strong>使用地区：</strong> 澳大利亚元是以下地区的法定货币：澳大利亚及其5个属地。同时，它也是瑙鲁、图瓦卢和基里巴斯的流通货币。</li>
+                    <li><strong>货币符号：</strong> 国际货币符号为AUD。有时会使用A$来表示澳元。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li>澳大利亚最初使用与英镑相同的通货。后来采用了澳大利亚镑，币值与英镑等同。一镑包含20先令，一先令包含12便士，因此一镑等同于240便士。</li>
+                    <li>1966年，澳大利亚实行十进制，货币也改为十进制。新的十进制货币与美元联动，单位为澳大利亚元，币值等同于旧澳大利亚镑的半镑（10先令）。1 澳元等于100分，1分约等于1.2旧便士。</li>
+                    <li>1995年起，澳大利亚开始使用塑料纸币，这种纸币更耐用且美观，并设计有透明"窗口"。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">货币种类</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>硬币：</strong> 目前流通的硬币有5分、10分、20分、50分、1元和2元。
+                        <ul class="list-circle pl-6 mt-2 space-y-1">
+                            <li>1966年开始发行1分、2分、5分、10分、20分和50分的硬币。1984年加入了1元硬币，1988年加入了2元硬币。1992年，1分和2分硬币停止流通。</li>
+                            <li>硬币上通常有澳大利亚君主肖像，由皇家澳洲铸币厂制造。</li>
+                        </ul>
+                    </li>
+                    <li><strong>纸币：</strong> 流通的纸币有5元、10元、20元、50元和100元。澳大利亚的纸币是塑料材质。</li>
+                    <li><strong>发行机构：</strong> 澳大利亚储备银行负责发行澳元。皇家澳洲铸币厂负责制造硬币。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 日元 -->
+        <section id="jpy" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/japanese-flag.svg" alt="日本国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">日元 (JPY)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">日元是日本的官方货币，是世界交易量第三大的货币，在亚洲和全球金融市场中具有重要地位。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本信息</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>正式名称：</strong> 日元是日本的官方货币，正式名称为日本円。</li>
+                    <li><strong>代码与符号：</strong> 国际货币代码为 JPY，货币符号为 ¥。</li>
+                    <li><strong>发行机构：</strong> 日元由日本中央银行（日本银行，BOJ）发行。</li>
+                    <li><strong>货币种类：</strong> 日元分为硬币和纸币，共有 10 种不同面额的流通货币。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">货币种类</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>硬币：</strong> 1日元、5日元、10日元、50日元、100日元、500日元</li>
+                    <li><strong>纸币：</strong> 1,000日元、2,000日元、5,000日元、10,000日元</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史与变迁</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li>现代日元诞生于 1871 年，当时日本政府颁布《新货币条例》。</li>
+                    <li>最初与黄金挂钩，后来与美元挂钩。</li>
+                    <li>日本银行于 1882 年成立，作为日本的中央银行，并于 1885 年开始发行可兑换纸币。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">日元汇率</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>日元是世界交易量第三大的货币。</li>
+                    <li>影响日元汇率的因素包括日美之间的利息差，日本的贸易差额以及日本银行的金融政策。</li>
+                    <li>日本大约每20年就会更新一次纸币和硬币。</li>
+                    <li>新版纸币已于 2024 年 7 月 3 日发行。</li>
+                    <li>5日元硬币被广泛认为是吉祥币，常被用作参拜神社和寺庙的香火钱。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 瑞士法郎 -->
+        <section id="chf" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/swiss-flag.svg" alt="瑞士国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">瑞士法郎 (CHF)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">瑞士法郎（Swiss Franc）简称瑞郎，是瑞士和列支敦士登的法定货币，由瑞士国家银行发行。作为重要的避险货币，瑞士法郎在全球金融市场中扮演着独特的角色。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>定义：</strong> 瑞士法郎（Swiss Franc）简称瑞郎，是瑞士和列支敦士登的法定货币，由瑞士国家银行发行。其货币代码为CHF。</li>
+                    <li><strong>货币面额：</strong>
+                        <ul class="list-circle pl-6 mt-2 space-y-1">
+                            <li><strong>硬币：</strong> 5分、10分、20分、50分、1瑞郎、2瑞郎和5瑞郎。</li>
+                            <li><strong>纸币：</strong> 10瑞郎、20瑞郎、50瑞郎、100瑞郎、200瑞郎和1000瑞郎。</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li>19世纪初，瑞士货币体系分散，各地发行多达8000种货币。</li>
+                    <li>1848年瑞士联邦宪法规定联邦政府是唯一允许发行货币的机构。</li>
+                    <li>1850年，瑞士联邦议会通过法案，引入瑞士法郎以取代各地货币。</li>
+                    <li>瑞士法郎与法国法郎采用相同的货币标准。</li>
+                    <li>1865年至1927年，瑞士加入了拉丁货币同盟。</li>
+                    <li>1920年开始，瑞士采用金本位制度，后于2000年结束，瑞士法郎转为浮动汇率。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">特点与影响因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>避险货币：</strong> 瑞士政治中立和金融体系稳定，使其成为投资者眼中的避险货币。</li>
+                    <li><strong>低利率政策：</strong> 为应对瑞郎升值对经济的影响，瑞士曾实施负利率政策，直至2022年结束。</li>
+                    <li><strong>影响汇率的因素：</strong>
+                        <ul class="list-circle pl-6 mt-2 space-y-1">
+                            <li><strong>经济及国际贸易：</strong> 瑞士经济表现强劲或出口增加会推高瑞郎汇率，反之则会下跌。</li>
+                            <li><strong>国际及地缘政治风险：</strong> 瑞士作为中立国，在地缘政治风险发生时，常被视为避险货币，从而推高瑞郎汇率。</li>
+                            <li><strong>利率差异：</strong> 瑞士利率相对较高时，会吸引外国投资者，增加对瑞郎的需求，从而推高汇率。</li>
+                        </ul>
+                    </li>
+                    <li><strong>瑞士法郎脱钩欧元：</strong> 2015年1月15日，瑞士央行取消1欧元兑1.20瑞士法郎的汇率下限，允许瑞郎自由浮动，导致瑞郎兑各主要货币汇率大幅上涨。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 加元 -->
+        <section id="cad" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/canadian-flag.svg" alt="加拿大国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">加元 (CAD)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">加元是加拿大的官方货币，在国际贸易和金融交易中广泛使用，被归类为商品货币，与自然资源价格尤其是石油价格密切相关。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本背景</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>官方货币：</strong> 加元是加拿大的官方货币，货币符号为$，有时以C$或CA$来区分其他使用美元符号的货币。自1858年加拿大开始使用纸币以来，加元经历了多次改进。</li>
+                    <li><strong>发行与管理：</strong> 加元由加拿大中央银行（Bank of Canada）发行和管理。加拿大银行负责制定和执行货币政策，以维护货币的稳定和经济的健康发展。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">货币特征</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>商品货币：</strong> 加元与澳元和新西兰元一样，被归类为商品货币。加拿大经济在一定程度上依赖于资源开发，特别是石油。原油出口占该国出口的很大比例，因此加元和原油价格呈现高度正相关关系。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">汇率影响因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>经济数据：</strong> 加元的汇率受到多种因素的影响，包括经济数据、利率水平、商品价格、贸易状况和全球经济状况。</li>
+                    <li><strong>商品价格：</strong> 全球大宗商品价格的波动，特别是石油和金属等商品，会直接影响加元的价值。</li>
+                    <li><strong>利率政策：</strong> 加拿大央行的利率政策对加元的价值有显著影响。较高的利率通常会使加元升值，因为高利率使本国资产更具吸引力。</li>
+                    <li><strong>国际贸易：</strong> 作为一个资源型国家，加拿大与全球各国的贸易联系紧密，加元在国际贸易中的使用范围广泛。尤其是在北美地区，加元是与美国经济联系最为紧密的货币之一。</li>
+                    <li><strong>稳定性：</strong> 加元的稳定性在全球金融市场中占有一席之地。加拿大经济的稳定性、低通胀率和稳健的财政政策为加元的汇率稳定提供了坚实的基础。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 新西兰元 -->
+        <section id="nzd" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/new-zealand-flag.svg" alt="新西兰国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">新西兰元 (NZD)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">新西兰元 (NZD)，也被称为纽元，是新西兰的官方货币，其汇率受多种因素影响，对新西兰经济和国际投资者都具有重要意义。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">简史</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li>纽元于1967年开始发行，取代了新西兰镑，成为新西兰的官方货币。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响新西兰元汇率的关键因素</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>国内经济因素：</strong> 新西兰的经济数据，如GDP增长率、就业数据、通货膨胀率、贸易数据等，直接影响纽元汇率。经济数据表现良好通常会导致纽元升值，反之则可能导致贬值。</li>
+                    <li><strong>新西兰储备银行(RBNZ)的利率政策：</strong> 新西兰央行的利率决策对纽元汇率有重大影响。提高利率可能吸引资金流入，支撑纽元，而降低利率则可能导致纽元贬值。</li>
+                    <li><strong>商品货币属性：</strong> 作为商品货币，纽元易受大宗商品价格波动的影响。新西兰是主要的奶制品和羊肉出口国，因此全球乳制品和羊肉价格的变动会影响纽元汇率。特别是，中国作为最大的原材料进口国，其经济状况会间接影响新西兰的原材料出口和纽元表现。</li>
+                    <li><strong>国际贸易：</strong> 新西兰的进出口活动对纽元汇率有很大影响。出口增加通常会推动纽元升值，而出口减少可能导致其贬值。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">其他重要因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>政治稳定性：</strong> 新西兰政治的稳定性是投资者考虑的重要因素。政治动荡可能降低投资者信心，导致纽元贬值。</li>
+                    <li><strong>国际资本流动：</strong> 外国投资者的资金流入或流出会影响新西兰的资本账户，进而影响纽元的供求关系和汇率水平。</li>
+                    <li><strong>全球市场情绪：</strong> 全球市场的风险偏好会影响纽元汇率。在全球投资者对风险资产持乐观态度时，通常会支撑纽元；反之，市场恐慌情绪可能导致纽元贬值。</li>
+                    <li><strong>与美元的汇率：</strong> 美元的走势也会影响纽元。新西兰和美国的经济数据和货币政策差异会影响纽元兑美元汇率。一般来说，强劲的经济数据和鹰派货币政策可能支撑纽元兑美元汇率。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 港币 -->
+        <section id="hkd" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/hong-kong-flag.svg" alt="香港特别行政区区旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">港币 (HKD)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">港币是香港特别行政区的法定货币，由香港金融管理局监管，但实际的发钞行为三家商业银行。港币与美元挂钩，汇率相对稳定，是亚洲重要的交易货币之一。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>发行机构：</strong> 港币由香港三家发钞银行（汇丰银行、中国银行和渣打银行）发行，由香港金融管理局监管。</li>
+                    <li><strong>货币符号：</strong> 港币的符号是HK$，国际标准代码为HKD。</li>
+                    <li><strong>联系汇率制度：</strong> 港币与美元挂钩，1美元兑换7.75-7.85港币范围内浮动。</li>
+                    <li><strong>流通硬币：</strong> 10仙、20仙、50仙、1元、2元、5元、10元。</li>
+                    <li><strong>流通纸币：</strong> 10元、20元、50元、100元、500元和1000元。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史与特点</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>历史：</strong> 港币于1863年首次发行，当时由香港上海汇丰银行发行。1935年香港政府开始发行政府纸币。</li>
+                    <li><strong>联系汇率制度：</strong> 1983年10月17日，香港实施联系汇率制度，将港币与美元挂钩，这一制度至今仍在运行。</li>
+                    <li><strong>国际地位：</strong> 港币是全球第13大交易货币，在亚洲地区仅次于日元和人民币。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响港币的因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>美元走势：</strong> 由于联系汇率制度，美元的走势直接影响港币的国际价值。</li>
+                    <li><strong>香港经济状况：</strong> 香港的经济数据、政治稳定性和金融市场表现都会间接影响港币。</li>
+                    <li><strong>利率政策：</strong> 香港的利率通常跟随美联储的政策，但也会根据本地情况进行调整。</li>
+                    <li><strong>资金流动：</strong> 资金流入或流出香港会影响港币的需求，尤其是在股票市场活跃期间。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 土耳其里拉 -->
+        <section id="try" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/turkish-flag.svg" alt="土耳其国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">土耳其里拉 (TRY)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">土耳其里拉是土耳其共和国的官方货币，由土耳其中央银行发行和管理。近年来，里拉经历了显著的贬值，主要受到通货膨胀和经济政策影响。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>发行机构：</strong> 土耳其中央银行负责里拉的发行与管理。</li>
+                    <li><strong>货币代码：</strong> 国际标准代码为TRY（2005年之前为TRL）。</li>
+                    <li><strong>货币符号：</strong> 里拉的符号为₺（2012年采用）。</li>
+                    <li><strong>面额：</strong> 流通纸币有5、10、20、50、100和200里拉；硬币有1、5、10、25和50库鲁什（kuruş，1里拉=100库鲁什）以及1里拉。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史演变</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>货币改革：</strong> 2005年1月1日，土耳其进行了货币改革，引入"新土耳其里拉"（YTL），1新里拉等于100万旧里拉。2009年，"新"字被去掉，货币代码改为TRY。</li>
+                    <li><strong>货币贬值：</strong> 近年来，里拉经历了严重贬值，从2013年约2里拉兑1美元下跌至2023年超过20里拉兑1美元。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>通货膨胀：</strong> 土耳其面临高通胀问题，通胀率在某些时期超过80%，严重影响了里拉的购买力。</li>
+                    <li><strong>货币政策：</strong> 与大多数国家通过提高利率来对抗通胀不同，土耳其采取了非传统的低利率政策，加剧了货币贬值。</li>
+                    <li><strong>政治因素：</strong> 政治不确定性和地缘政治风险增加了里拉的波动性。</li>
+                    <li><strong>外债：</strong> 土耳其较高的外债水平和经常账户赤字使里拉面临额外压力。</li>
+                    <li><strong>外汇储备：</strong> 央行外汇储备的波动也影响里拉的稳定性。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 印度卢比 -->
+        <section id="inr" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/indian-flag.svg" alt="印度国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">印度卢比 (INR)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">印度卢比是印度共和国的官方货币，也在不丹和尼泊尔等邻国被接受为交易货币。作为人口第一大国家的货币，卢比在全球经济体系中的重要性日益增长。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>货币符号：</strong> 印度卢比的符号是₹，2010年7月正式采用。</li>
+                    <li><strong>货币代码：</strong> 国际标准代码为INR。</li>
+                    <li><strong>发行机构：</strong> 印度储备银行(RBI)负责卢比的发行与管理。</li>
+                    <li><strong>面额：</strong> 流通纸币有5、10、20、50、100、200、500和2000卢比；硬币有1、2、5、10和20卢比。</li>
+                    <li><strong>辅币：</strong> 1卢比等于100派萨(paise)，但由于通货膨胀，派萨硬币已经基本退出流通。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史与发展</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>历史起源：</strong> "卢比"一词源自梵语"rupya"，意为"银币"。印度卢比可追溯到16世纪莫卧儿帝国时期。</li>
+                    <li><strong>货币演变：</strong> 独立后，印度于1950年启用了印度共和国卢比，取代了英属印度的货币系统。</li>
+                    <li><strong>纸币特点：</strong> 印度纸币正面通常印有圣雄甘地的肖像，背面则展示印度不同方面的文化和成就。</li>
+                    <li><strong>废钞令：</strong> 2016年11月，印度政府宣布500和1000卢比纸币作废，并引入新版500和2000卢比纸币，目的是打击黑钱和伪造货币。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响卢比的因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>经济指标：</strong> 印度的GDP增长、通货膨胀、财政赤字等宏观经济指标对卢比汇率有重要影响。</li>
+                    <li><strong>原油价格：</strong> 作为主要石油进口国，国际油价变动对印度经常账户余额和卢比汇率有显著影响。</li>
+                    <li><strong>资本流动：</strong> 外国投资者的资金流入和流出会影响卢比的供求关系。</li>
+                    <li><strong>货币政策：</strong> 印度储备银行的利率决策和外汇干预政策直接影响卢比汇率。</li>
+                    <li><strong>地缘政治因素：</strong> 与周边国家的关系以及全球政治经济环境也会影响卢比的表现。</li>
+                    <li><strong>季节性因素：</strong> 农产品出口季节和节日消费期间，卢比可能有季节性波动。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 印尼盾 -->
+        <section id="idr" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/indonesian-flag.svg" alt="印度尼西亚国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">印尼盾 (IDR)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">印尼盾是印度尼西亚共和国的官方货币，由印尼中央银行发行和管理。作为东南亚最大经济体的货币，印尼盾在区域贸易中扮演重要角色。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>货币代码：</strong> 国际标准代码为IDR。</li>
+                    <li><strong>货币符号：</strong> 印尼盾的符号是Rp。</li>
+                    <li><strong>发行机构：</strong> 印度尼西亚银行(Bank Indonesia)负责印尼盾的发行与管理。</li>
+                    <li><strong>面额：</strong> 流通纸币有1000、2000、5000、10000、20000、50000和100000印尼盾；硬币有100、200、500和1000印尼盾。</li>
+                    <li><strong>货币特点：</strong> 印尼盾是一种面值较大的货币，日常交易通常涉及数万甚至数十万的数字。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史与发展</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>历史起源：</strong> 印尼盾于1946年印度尼西亚独立后不久引入，取代了荷属东印度盾。</li>
+                    <li><strong>亚洲金融危机：</strong> 1997-1998年亚洲金融危机期间，印尼盾大幅贬值，从危机前约2000印尼盾兑1美元跌至超过16000印尼盾兑1美元。</li>
+                    <li><strong>货币改革：</strong> 为应对高通胀和简化日常交易，印尼政府曾多次考虑重新面额（去零），但尚未实施。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响印尼盾的因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>商品价格：</strong> 作为主要大宗商品出口国，煤炭、棕榈油、橡胶等商品价格波动会影响印尼盾汇率。</li>
+                    <li><strong>经济指标：</strong> 印尼的GDP增长、通货膨胀、经常账户余额等宏观经济指标对印尼盾有重要影响。</li>
+                    <li><strong>资本流动：</strong> 外国投资者对印尼债券和股票市场的投资会影响印尼盾的供求关系。</li>
+                    <li><strong>货币政策：</strong> 印尼中央银行的利率决策和外汇干预政策直接影响印尼盾汇率。</li>
+                    <li><strong>区域因素：</strong> 东南亚地区的经济表现和地区稳定性也会影响印尼盾。</li>
+                    <li><strong>美元强势：</strong> 印尼盾与美元存在较高的相关性，美元走强通常意味着印尼盾贬值。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 越南盾 -->
+        <section id="vnd" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/vietnamese-flag.svg" alt="越南国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">越南盾 (VND)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">越南盾是越南社会主义共和国的官方货币，由越南国家银行发行和管理。作为东南亚快速发展的经济体货币，越南盾的国际影响力逐渐增强。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>货币代码：</strong> 国际标准代码为VND。</li>
+                    <li><strong>货币符号：</strong> 越南盾的符号是₫，也常用VND表示。</li>
+                    <li><strong>发行机构：</strong> 越南国家银行(State Bank of Vietnam)负责越南盾的发行与管理。</li>
+                    <li><strong>面额：</strong> 流通纸币有1000、2000、5000、10000、20000、50000、100000、200000、500000越南盾；硬币有200、500、1000、2000、5000越南盾，但硬币在日常交易中较少使用。</li>
+                    <li><strong>货币特点：</strong> 越南盾是一种面值较大的货币，日常交易通常涉及数万甚至数十万的数字。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史与发展</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>历史起源：</strong> 越南盾于1946年首次发行，取代了法属印度支那皮阿斯特。</li>
+                    <li><strong>统一货币：</strong> 1978年越南统一后，南越货币被北越货币取代，形成统一的越南盾。</li>
+                    <li><strong>货币改革：</strong> 1985年，越南进行了货币改革，新越南盾取代旧越南盾，兑换比例为1:10。</li>
+                    <li><strong>聚合物纸币：</strong> 2003年起，越南开始引入聚合物材质的纸币，提高了防伪性能和耐用性。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响越南盾的因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>经济增长：</strong> 越南近年来保持较高的经济增长率，这为越南盾提供了支撑。</li>
+                    <li><strong>通货膨胀：</strong> 越南历史上曾经历高通胀，通胀率的变化会影响越南盾的内部和外部价值。</li>
+                    <li><strong>贸易平衡：</strong> 越南的出口表现和贸易顺差对越南盾汇率有重要影响。</li>
+                    <li><strong>外国直接投资：</strong> 越南吸引了大量外国直接投资，这些资金流入支持了越南盾。</li>
+                    <li><strong>管理浮动汇率：</strong> 越南实行管理浮动汇率制度，央行通过外汇干预来稳定越南盾汇率。</li>
+                    <li><strong>美元关系：</strong> 越南经济和贸易与美元高度相关，美元走势直接影响越南盾汇率。</li>
+                    <li><strong>侨汇：</strong> 海外越南侨民汇款是越南外汇收入的重要来源，影响越南盾的供求关系。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 南非兰特 -->
+        <section id="zar" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/south-african-flag.svg" alt="南非国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">南非兰特 (ZAR)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">南非兰特是南非共和国的法定货币，也被纳米比亚、莱索托和斯威士兰等邻国使用或与本国货币挂钩。作为非洲经济最发达国家的货币，兰特是非洲大陆流动性最强的货币。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>货币代码：</strong> 国际标准代码为ZAR。</li>
+                    <li><strong>货币符号：</strong> 南非兰特的符号是R。</li>
+                    <li><strong>命名由来：</strong> "Rand"名称源自南非约翰内斯堡附近的威特沃特斯兰德山脉(Witwatersrand)，该地区是世界著名的金矿带。</li>
+                    <li><strong>发行机构：</strong> 南非储备银行(South African Reserve Bank)负责兰特的发行与管理。</li>
+                    <li><strong>面额：</strong> 流通纸币有10、20、50、100和200兰特；硬币有10、20和50分以及1、2和5兰特。</li>
+                    <li><strong>辅币：</strong> 1兰特等于100分(cents)。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史与发展</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>引入时间：</strong> 兰特于1961年2月14日引入，取代了南非镑，当时兑换比例为2兰特=1镑。</li>
+                    <li><strong>双层汇率制度：</strong> 1985年至1995年，南非实行双层汇率制度，分为商业兰特和金融兰特。</li>
+                    <li><strong>货币设计：</strong> 1992年后的纸币正面印有"五大兽"(Big Five)非洲野生动物，2018年新版纸币正面改为印有前总统纳尔逊·曼德拉的肖像。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响兰特的因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>大宗商品价格：</strong> 作为主要矿产资源出口国，黄金、铂金和其他矿产品价格对兰特有重大影响。</li>
+                    <li><strong>全球风险情绪：</strong> 兰特被视为新兴市场货币，受全球投资者风险偏好变化影响较大。</li>
+                    <li><strong>经济指标：</strong> 南非的GDP增长、通货膨胀、失业率和财政状况对兰特汇率有重要影响。</li>
+                    <li><strong>政治稳定性：</strong> 政治事件和政策变化显著影响兰特的表现，政治不确定性常导致兰特贬值。</li>
+                    <li><strong>电力供应：</strong> 南非的电力危机对经济和兰特产生负面影响。</li>
+                    <li><strong>主权信用评级：</strong> 国际信用评级机构对南非的评级变动会影响资本流动和兰特汇率。</li>
+                    <li><strong>利率政策：</strong> 南非央行的利率决策对吸引外资和支撑兰特有显著影响。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 巴西雷亚尔 -->
+        <section id="brl" class="mb-16">
+            <div class="flex items-center mb-6">
+                <img src="images/brazilian-flag.svg" alt="巴西国旗" class="w-12 h-8 mr-4 rounded shadow-sm">
+                <h2 class="text-3xl font-bold">巴西雷亚尔 (BRL)</h2>
+            </div>
+            <div class="bg-gray-50 rounded-lg p-6 shadow-sm">
+                <p class="mb-4 leading-relaxed">巴西雷亚尔是巴西联邦共和国的官方货币，由巴西中央银行发行和管理。作为拉丁美洲最大经济体的货币，雷亚尔在区域和全球金融市场中扮演重要角色。</p>
+                
+                <h3 class="text-xl font-semibold mt-6 mb-3">基本知识</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>货币代码：</strong> 国际标准代码为BRL。</li>
+                    <li><strong>货币符号：</strong> 巴西雷亚尔的符号是R$。</li>
+                    <li><strong>命名由来：</strong> "Real"在葡萄牙语中意为"王室的"或"真实的"，历史上曾是葡萄牙和巴西早期使用的货币名称。</li>
+                    <li><strong>发行机构：</strong> 巴西中央银行(Banco Central do Brasil)负责雷亚尔的发行与管理。</li>
+                    <li><strong>面额：</strong> 流通纸币有2、5、10、20、50、100和200雷亚尔；硬币有5、10、25、50分和1雷亚尔。</li>
+                    <li><strong>辅币：</strong> 1雷亚尔等于100分(centavos)。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">历史与发展</h3>
+                <ul class="list-disc pl-6 space-y-2 mb-6">
+                    <li><strong>引入背景：</strong> 现代雷亚尔于1994年7月1日引入，是巴西"雷亚尔计划"(Plano Real)的一部分，旨在结束多年的恶性通货膨胀。</li>
+                    <li><strong>货币改革：</strong> 雷亚尔取代了克鲁塞罗雷亚尔(Cruzeiro Real)，是巴西自1942年以来的第八种货币。</li>
+                    <li><strong>初期稳定：</strong> 雷亚尔最初与美元保持接近1:1的汇率，但1999年1月放弃固定汇率后大幅贬值。</li>
+                    <li><strong>货币设计：</strong> 雷亚尔纸币正面印有巴西共和国女神像，背面展示巴西本土动物。</li>
+                </ul>
+
+                <h3 class="text-xl font-semibold mt-6 mb-3">影响雷亚尔的因素</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>商品价格：</strong> 作为主要大宗商品出口国，铁矿石、大豆、咖啡等产品价格波动会影响雷亚尔。</li>
+                    <li><strong>政治因素：</strong> 巴西政治稳定性和政策变化对雷亚尔有显著影响。</li>
+                    <li><strong>经济指标：</strong> 巴西的GDP增长、通货膨胀、失业率和财政状况等宏观经济指标对雷亚尔汇率有直接影响。</li>
+                    <li><strong>全球风险情绪：</strong> 作为新兴市场货币，雷亚尔受全球投资者风险偏好变化影响较大。</li>
+                    <li><strong>美元走势：</strong> 美元的强弱周期通常与雷亚尔呈反向关系。</li>
+                    <li><strong>利率政策：</strong> 巴西中央银行的利率决策对吸引外资和支撑雷亚尔有显著影响。</li>
+                    <li><strong>外汇干预：</strong> 巴西央行通过外汇干预影响雷亚尔汇率，以控制过度波动。</li>
+                    <li><strong>外债水平：</strong> 巴西的外债规模和偿还能力会影响投资者对雷亚尔的信心。</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-100 border-t border-gray-200 py-4 text-center">
+        <p class="text-sm text-gray-500">版权所有 © 2024 外汇基础知识</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
