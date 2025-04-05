@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <!-- Red background -->
+  <rect width="900" height="600" fill="#ee1c25"/>
+  
+  <!-- White flower -->
+  <g fill="#fff">
+    <!-- Petal 1 -->
+    <path d="M450 150c0 0-73.5 53.5-73.5 126c0 56.1 55.7 101 73.5 101s73.5-44.9 73.5-101C523.5 203.5 450 150 450 150z"/>
+    <!-- Petal 2 -->
+    <path d="M450 150c0 0 53.5 73.5 126 73.5c56.1 0 101-55.7 101-73.5s-44.9-73.5-101-73.5C503.5 76.5 450 150 450 150z"/>
+    <!-- Petal 3 -->
+    <path d="M450 150c0 0 73.5-53.5 73.5-126c0-56.1-55.7-101-73.5-101s-73.5 44.9-73.5 101C376.5 96.5 450 150 450 150z"/>
+    <!-- Petal 4 -->
+    <path d="M450 150c0 0-53.5-73.5-126-73.5c-56.1 0-101 55.7-101 73.5s44.9 73.5 101 73.5C396.5 223.5 450 150 450 150z"/>
+    <!-- Petal 5 -->
+    <path d="M450 150c0 0-93.2 4.6-131 56.8c-29.8 41.3-10.5 110.1 4.3 123.7c14.8 13.6 87.5 21.9 124.4-25.6C486.5 257 450 150 450 150z"/>
+  </g>
+  
+  <!-- Red stamens and stars -->
+  <g fill="#ee1c25">
+    <!-- Center circle -->
+    <circle cx="450" cy="300" r="20"/>
+    
+    <!-- Stamen 1 -->
+    <path d="M450 300l-20 -90" stroke="#ee1c25" stroke-width="5" fill="none"/>
+    <circle cx="430" cy="210" r="8"/>
+    
+    <!-- Stamen 2 -->
+    <path d="M450 300l60 -70" stroke="#ee1c25" stroke-width="5" fill="none"/>
+    <circle cx="510" cy="230" r="8"/>
+    
+    <!-- Stamen 3 -->
+    <path d="M450 300l90 20" stroke="#ee1c25" stroke-width="5" fill="none"/>
+    <circle cx="540" cy="320" r="8"/>
+    
+    <!-- Stamen 4 -->
+    <path d="M450 300l30 85" stroke="#ee1c25" stroke-width="5" fill="none"/>
+    <circle cx="480" cy="385" r="8"/>
+    
+    <!-- Stamen 5 -->
+    <path d="M450 300l-80 50" stroke="#ee1c25" stroke-width="5" fill="none"/>
+    <circle cx="370" cy="350" r="8"/>
+  </g>
+</svg> 

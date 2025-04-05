@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <!-- Red top -->
+  <rect width="900" height="100" fill="#e03c31"/>
+  
+  <!-- White below red -->
+  <rect width="900" height="100" y="100" fill="#ffffff"/>
+  
+  <!-- Blue middle -->
+  <rect width="900" height="200" y="200" fill="#002395"/>
+  
+  <!-- White below blue -->
+  <rect width="900" height="100" y="400" fill="#ffffff"/>
+  
+  <!-- Green bottom -->
+  <rect width="900" height="100" y="500" fill="#007a4d"/>
+  
+  <!-- Black triangle -->
+  <polygon fill="#000000" points="0,0 300,300 0,600"/>
+  
+  <!-- Yellow borders -->
+  <polygon fill="#ffd700" points="0,100 200,300 0,500"/>
+  
+  <!-- Green triangle -->
+  <polygon fill="#007a4d" points="0,150 150,300 0,450"/>
+</svg> 

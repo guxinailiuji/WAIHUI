@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640">
+  <rect width="1280" height="640" fill="#012169"/>
+  
+  <!-- Union Jack in the canton -->
+  <g>
+    <!-- St George's Cross (White) -->
+    <path d="M0 0h256v168h-256z" fill="#012169"/>
+    <path d="M128 0v168M0 84h256" stroke="#fff" stroke-width="42"/>
+    
+    <!-- St Patrick's Cross (Red) -->
+    <path d="M128 0v168M0 84h256" stroke="#C8102E" stroke-width="24"/>
+    
+    <!-- St Andrew's Cross (White diagonal) -->
+    <path d="M0 0l256 168M256 0L0 168" stroke="#fff" stroke-width="42"/>
+    
+    <!-- St Patrick's Cross (Red diagonal) -->
+    <path d="M0 0l256 168M256 0L0 168" stroke="#C8102E" stroke-width="24" 
+          clip-path="url(#diagonal-clip)"/>
+  </g>
+  
+  <!-- Commonwealth Star (Large seven-pointed star) -->
+  <path d="M640 140l-17 50h-53l44 32-17 50 43-30 44 30-17-50 43-32h-52z" fill="#fff"/>
+  
+  <!-- Southern Cross (5 stars in the fly) -->
+  <!-- Alpha Crucis (5-pointed) -->
+  <path d="M640 470l-12 35h-36l30 22-12 35 30-21 30 21-12-35 30-22h-36z" fill="#fff"/>
+  
+  <!-- Beta Crucis (7-pointed) -->
+  <path d="M875 320l-14 40h-42l34 26-13 41 35-26 35 26-13-41 34-26h-42z" fill="#fff"/>
+  
+  <!-- Gamma Crucis (7-pointed) -->
+  <path d="M875 500l-14 40h-42l34 26-13 41 35-26 35 26-13-41 34-26h-42z" fill="#fff"/>
+  
+  <!-- Delta Crucis (7-pointed) -->
+  <path d="M1075 420l-10 29h-30l24 18-9 29 25-19 25 19-9-29 24-18h-30z" fill="#fff"/>
+  
+  <!-- Epsilon Crucis (5-pointed, smaller) -->
+  <path d="M1000 250l-7 22h-24l19 14-7 22 19-14 19 14-7-22 19-14h-24z" fill="#fff"/>
+  
+  <!-- Clip path for the St Patrick's Cross -->
+  <defs>
+    <clipPath id="diagonal-clip">
+      <path d="M128 84h128v84zv84H0zH0V0zV0h128z"/>
+    </clipPath>
+  </defs>
+</svg>

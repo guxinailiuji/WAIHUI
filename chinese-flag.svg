@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <rect width="900" height="600" fill="#de2910"/>
+  <g fill="#ffde00">
+    <!-- Big star -->
+    <path d="M150,120 l29,91 -78,-56 h98 l-78,56 z"/>
+    <!-- Small stars -->
+    <path d="M290,95 l9,28 -23,-17 h29 l-23,17 z"/>
+    <path d="M320,150 l9,28 -23,-17 h29 l-23,17 z"/>
+    <path d="M290,205 l9,28 -23,-17 h29 l-23,17 z"/>
+    <path d="M230,180 l9,28 -23,-17 h29 l-23,17 z"/>
+  </g>
+</svg> 

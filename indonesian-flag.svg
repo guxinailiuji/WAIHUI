@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <!-- Red (top) -->
+  <rect width="900" height="300" fill="#FF0000"/>
+  
+  <!-- White (bottom) -->
+  <rect width="900" height="300" y="300" fill="#FFFFFF"/>
+</svg> 

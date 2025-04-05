@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <!-- Saffron (top) -->
+  <rect width="900" height="200" fill="#FF9933"/>
+  
+  <!-- White (middle) -->
+  <rect width="900" height="200" y="200" fill="#FFFFFF"/>
+  
+  <!-- Green (bottom) -->
+  <rect width="900" height="200" y="400" fill="#138808"/>
+  
+  <!-- Navy blue Ashoka Chakra -->
+  <circle cx="450" cy="300" r="60" fill="#000080"/>
+  <circle cx="450" cy="300" r="55" fill="#FFFFFF"/>
+  
+  <!-- 24 spokes simplified -->
+  <g stroke="#000080" stroke-width="2">
+    <circle cx="450" cy="300" r="40" fill="none"/>
+    <!-- Vertical and horizontal spokes -->
+    <line x1="450" y1="240" x2="450" y2="360"/>
+    <line x1="390" y1="300" x2="510" y2="300"/>
+    <!-- Diagonal spokes -->
+    <line x1="408" y1="258" x2="492" y2="342"/>
+    <line x1="408" y1="342" x2="492" y2="258"/>
+    <!-- Additional spokes -->
+    <line x1="423" y1="244" x2="477" y2="356"/>
+    <line x1="423" y1="356" x2="477" y2="244"/>
+    <line x1="394" y1="269" x2="506" y2="331"/>
+    <line x1="394" y1="331" x2="506" y2="269"/>
+  </g>
+</svg> 
